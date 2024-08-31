@@ -1,10 +1,11 @@
-package com.example.catapult.cats.db.images
+package rma.catquiz.cats.entities.image
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+import rma.catquiz.cats.entities.cat.CatImage
 
 @Dao
 interface CatImageDao {
@@ -16,5 +17,5 @@ interface CatImageDao {
     fun getImageByUrl(url: String): Flow<String>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllGalleryCats(cats: List<CatGallery>)
+    suspend fun insertAllGalleryCats(cats: List<CatImage>)
 }
