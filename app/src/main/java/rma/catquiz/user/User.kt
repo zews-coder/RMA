@@ -10,7 +10,7 @@ data class User(
     val nickname: String,
     val email: String,
     val darkTheme: Boolean = false,
-    val quiz: UserQuiz = UserQuiz.EMPTY
+    val quiz: UserQuiz = UserQuiz.EMPTY,
 ){
     companion object {
         val EMPTY = User(
@@ -24,15 +24,24 @@ data class User(
 }
 
 @Serializable
+data class UserData (
+    val user: User?,
+) {
+    companion object {
+        val EMPTY = UserData(user = null)
+    }
+}
+
+@Serializable
 data class UserQuiz(
     val resultsHistory: List<QuizResult> = emptyList(),
-    val bestResult: Double = 0.0,
+    val bestResult: Float = 0f,
     val bestPosition: Int = Int.MAX_VALUE,
 ) {
     companion object {
         val EMPTY = UserQuiz(
             resultsHistory = emptyList(),
-            bestResult = 0.0,
+            bestResult = 0f,
             bestPosition = Int.MAX_VALUE
         )
     }
@@ -40,9 +49,14 @@ data class UserQuiz(
 
 @Serializable
 data class QuizResult(
-    val result: Double = 0.0,
+    val result: Float = 0f,
     val createdAt: Long
 ) {
+    fun getDate(): String{
+        return covertToDate(createdAt)
+    }
+
+
     fun covertToDate(milliSeconds: Long): String {
         // Create a DateFormatter object for displaying date in specified format.
         val formatter = SimpleDateFormat("dd/MM/yyy hh:mm:ss")

@@ -3,31 +3,38 @@ package rma.catquiz
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import rma.catquiz.ui.theme.RMA_CatQuizTheme
+import dagger.hilt.android.AndroidEntryPoint
+import rma.catquiz.navigation.AppNavigation
+import rma.catquiz.user.UserDataStore
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+//    private val analytics = AppAnalytics()
+    @Inject
+    lateinit var userDataStore: UserDataStore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContent {
-            RMA_CatQuizTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+            val usersData by userDataStore.data.collectAsState()
+            CatapultTheme(darkTheme = if (usersData.pick == -1) false else usersData.users[usersData.pick].darkTheme) {
+                AppNavigation()
             }
         }
     }
 }
+
+//val LocalAnalytics = compositionLocalOf<AppAnalytics> {
+//    error("Analytics not provided")
+//}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -40,7 +47,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    RMA_CatQuizTheme {
+    CatapultTheme {
         Greeting("Android")
     }
 }

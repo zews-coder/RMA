@@ -73,6 +73,13 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation("androidx.navigation:navigation-compose:$navVersion")
 
+    // Jetpack Compose dependencies
+    implementation ("androidx.compose.ui:ui:1.6.0")
+    implementation ("androidx.compose.material:material:1.6.0")
+
+    // Add this line for Material Icons
+    implementation ("androidx.compose.material:material-icons-extended:1.6.0")
+
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
@@ -104,4 +111,7 @@ dependencies {
 
     //DataStore
     implementation("androidx.datastore:datastore:1.1.1")
+
+    // Material 3 (Material You) dependency
+    implementation ("androidx.compose.material3:material3:1.2.1")
 }

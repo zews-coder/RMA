@@ -26,11 +26,11 @@ class CatService @Inject constructor(
 
     fun getAllCatImagesByIdFlow(id: String): Flow<List<String>> = catImageDao.getAllImagesForId(id)
 
-//    suspend fun getAllCatsPhotosApi(id: String): List<CatImage> {
-//        val images = catApi.getAllCatsPhotos(id).map { it.copy(id = id) }
-//        catImageDao.insertAllGalleryCats(cats = images)
-//        return images
-//    }
+    suspend fun getAllCatsPhotosApi(id: String): List<CatImage> {
+        val images = catApi.getAllCatsPhotos(id).map { it.copy(id = id) }
+        catImageDao.insertAllGalleryCats(cats = images)
+        return images
+    }
 
     suspend fun fetchAllResultsForCategory(category: Int): List<ResultDto> {
         return resultsApi.getAllResultsForCategory(category)
