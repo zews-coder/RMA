@@ -7,7 +7,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CatImageDao {
+interface CatGalleryDao {
 
     @Query("select url from images where id= :id")
     fun getAllImagesForId(id: String): Flow<List<String>>

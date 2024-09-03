@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import rma.catquiz.cats.entities.cat.CatDao
-import rma.catquiz.cats.entities.image.CatImageDao
+import rma.catquiz.cats.entities.image.CatGalleryDao
 import rma.catquiz.database.AppDataBase
 import rma.catquiz.database.AppDataBaseBuilder
 import javax.inject.Singleton
@@ -18,7 +18,7 @@ object DataBaseModule {
     @Provides
     fun provideCatDao(dataBase: AppDataBase): CatDao = dataBase.catDao()
     @Provides
-    fun provideCatGalleryDao(dataBase: AppDataBase): CatImageDao = dataBase.catGalleryDao()
+    fun provideCatGalleryDao(dataBase: AppDataBase): CatGalleryDao = dataBase.catGalleryDao()
 
     @Provides
     @Singleton

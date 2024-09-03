@@ -78,7 +78,7 @@ fun AppNavigation() {
 //        )
 
         quizScreen(
-            route = "quiz/left-right-cat",
+            route = "quiz",
             navController = navController
         )
 

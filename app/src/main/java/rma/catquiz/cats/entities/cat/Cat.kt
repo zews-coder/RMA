@@ -3,6 +3,7 @@ package rma.catquiz.cats.entities.cat
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = "cats")
@@ -14,6 +15,7 @@ data class Cat (
     val description: String,
     val origin: String,
     val temperament: String,
+    @SerialName("life_span")
     val life: String,
     @Embedded
     val weight: CatWeight,

@@ -7,12 +7,12 @@ import rma.catquiz.cats.api.interfaces.IResultsInterface
 import rma.catquiz.cats.entities.cat.Cat
 import rma.catquiz.cats.entities.cat.CatDao
 import rma.catquiz.cats.entities.image.CatGallery
-import rma.catquiz.cats.entities.image.CatImageDao
+import rma.catquiz.cats.entities.image.CatGalleryDao
 import javax.inject.Inject
 
 class CatService @Inject constructor(
     private val catDao: CatDao,
-    private val catImageDao: CatImageDao,
+    private val catGalleryDao: CatGalleryDao,
     private val catApi: ICatListInterface,
     private val resultsApi: IResultsInterface
 ) {
@@ -24,11 +24,11 @@ class CatService @Inject constructor(
 
     fun getCatByIdFlow(id: String): Flow<Cat> = catDao.getCatById(id)
 
-    fun getAllCatImagesByIdFlow(id: String): Flow<List<String>> = catImageDao.getAllImagesForId(id)
+    fun getAllCatImagesByIdFlow(id: String): Flow<List<String>> = catGalleryDao.getAllImagesForId(id)
 
     suspend fun getAllCatsPhotosApi(id: String): List<CatGallery> {
         val images = catApi.getAllCatsPhotos(id).map { it.copy(id = id) }
-        catImageDao.insertAllGalleryCats(cats = images)
+        catGalleryDao.insertAllGalleryCats(cats = images)
         return images
     }
 
