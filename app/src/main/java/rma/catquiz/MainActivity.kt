@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import rma.catquiz.navigation.AppNavigation
+import rma.catquiz.ui.theme.CatapultTheme
 import rma.catquiz.user.UserDataStore
 import javax.inject.Inject
 

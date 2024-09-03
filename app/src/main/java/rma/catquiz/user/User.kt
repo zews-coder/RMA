@@ -58,14 +58,10 @@ data class QuizResult(
 
 
     fun covertToDate(milliSeconds: Long): String {
-        // Create a DateFormatter object for displaying date in specified format.
         val formatter = SimpleDateFormat("dd/MM/yyy hh:mm:ss")
-
-        // Create a calendar object that will convert the date and time value in milliseconds to date.
         val calendar: Calendar = Calendar.getInstance()
         calendar.setTimeInMillis(milliSeconds)
 
-        //return the value
         return formatter.format(calendar.time)
     }
 }
