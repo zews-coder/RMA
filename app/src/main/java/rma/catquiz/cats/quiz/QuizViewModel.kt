@@ -29,7 +29,7 @@ class QuizViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _questionState =
-        MutableStateFlow(IQuizContract.QuizState(userData = userDataStore.data))
+        MutableStateFlow(IQuizContract.QuizState(userData = userDataStore.data.value))
     val questionState = _questionState.asStateFlow()
 
     private val _questionEvent = MutableSharedFlow<IQuizContract.QuizUIEvent>()

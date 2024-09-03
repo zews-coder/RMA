@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val usersData by userDataStore.data.collectAsState()
-            CatapultTheme(darkTheme = if (usersData.pick == -1) false else usersData.users[usersData.pick].darkTheme) {
+            CatapultTheme(darkTheme = if (usersData.nickname == "") false else usersData.darkTheme) {
                 AppNavigation()
             }
         }

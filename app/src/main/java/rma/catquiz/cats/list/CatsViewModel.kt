@@ -1,13 +1,8 @@
-package com.example.catapult.cats.list
+package rma.catquiz.cats.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
-import com.example.catapult.cats.list.ICatsContract.CatsListState
-import com.example.catapult.cats.list.ICatsContract.CatsListUIEvent
-
 import dagger.hilt.android.lifecycle.HiltViewModel
-
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,14 +24,16 @@ class CatsViewModel @Inject constructor(
     private val userDataStore: UserDataStore
 ) : ViewModel() {
 
-    private val _catsState = MutableStateFlow(CatsListState(
-        usersData =  userDataStore.data.value,
-        darkTheme = userDataStore.data.value.users[userDataStore.data.value.pick].darkTheme
-    ))
+    private val _catsState = MutableStateFlow(
+        ICatsContract.CatsListState(
+            userData = userDataStore.data.value,
+            darkTheme = userDataStore.data.value.darkTheme
+        )
+    )
     val catsState = _catsState.asStateFlow()
 
-    private val _catsEvents = MutableSharedFlow<CatsListUIEvent>()
-    fun setCatsEvent(event: CatsListUIEvent) = viewModelScope.launch { _catsEvents.emit(event) }
+    private val _catsEvents = MutableSharedFlow<ICatsContract.CatsListUIEvent>()
+    fun setCatsEvent(event: ICatsContract.CatsListUIEvent) = viewModelScope.launch { _catsEvents.emit(event) }
 
     //every time _catsState changes catsState automatically changes
     //catsState.asStateFlow().collect() - is to react to does automatically changes to catState, if you want do to something extra when that happens
@@ -51,20 +48,13 @@ class CatsViewModel @Inject constructor(
         observeEvents()
     }
 
-//    fun changeMainUser(pick: Int) {
-//        viewModelScope.launch {
-//            val usersData = userDataStore.changeMainUser(newPick = pick)
-//            setCatsState { copy(usersData = usersData, darkTheme = usersData.users[usersData.pick].darkTheme) }
-//        }
-//    }
-
     private fun observeEvents() {
         viewModelScope.launch {
             _catsEvents.collect { catsListUIEvent ->
                 when (catsListUIEvent) {
-                    is CatsListUIEvent.SearchQueryChanged -> searchQueryFilter(catsListUIEvent.query)
-                    is CatsListUIEvent.ChangeTheme -> changeTheme(catsListUIEvent.bool)
-                    is CatsListUIEvent.Logout -> logout(catsListUIEvent.user)
+                    is ICatsContract.CatsListUIEvent.SearchQueryChanged -> searchQueryFilter(catsListUIEvent.query)
+                    is ICatsContract.CatsListUIEvent.ChangeTheme -> changeTheme(catsListUIEvent.bool)
+                    is ICatsContract.CatsListUIEvent.Logout -> logout(catsListUIEvent.user)
                 }
             }
         }
@@ -73,20 +63,19 @@ class CatsViewModel @Inject constructor(
     private fun logout(user: User) {
         viewModelScope.launch {
             userDataStore.removeUser(user)
-            setCatsState { copy(usersData = userDataStore.data.value) }
+            setCatsState { copy(userData = userDataStore.data.value) }
         }
     }
 
     private fun changeTheme(bool: Boolean) {
-        val users = userDataStore.data.value.users.toMutableList()
-        val pick = userDataStore.data.value.pick
+        var user = userDataStore.data.value
 
-        users[pick] = users[pick].copy(
+        user = user.copy(
             darkTheme = bool
         )
 
         viewModelScope.launch {
-            userDataStore.updateUser(users.toImmutableList())
+            userDataStore.addUser(user)
             setCatsState { copy(darkTheme = bool) }
         }
     }
@@ -94,7 +83,7 @@ class CatsViewModel @Inject constructor(
     /**
      * Updates list of cats
      */
-    private fun setCatsState(updateWith: CatsListState.() -> CatsListState) =
+    private fun setCatsState(updateWith: ICatsContract.CatsListState.() -> ICatsContract.CatsListState) =
         _catsState.getAndUpdate(updateWith)
 
     /**
@@ -109,7 +98,7 @@ class CatsViewModel @Inject constructor(
                     catsService.fetchAllCatsFromApi()
                 }
             } catch (error: IOException) {
-                setCatsState { copy(error = CatsListState.DetailsError.DataUpdateFailed(cause = error)) }
+                setCatsState { copy(error = ICatsContract.CatsListState.DetailsError.DataUpdateFailed(cause = error)) }
             } finally {
                 setCatsState { copy(isLoading = false) }
             }

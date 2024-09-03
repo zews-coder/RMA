@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rma.catquiz.di.DispatcherProvider
+import rma.catquiz.navigation.addNewUser
 import rma.catquiz.user.User
 import rma.catquiz.user.UserDataStore
 import javax.inject.Inject
@@ -91,6 +92,6 @@ class LoginViewModel @Inject constructor(
 
     //TODO
     fun hasAccount(): Boolean {
-        return usersData.data.value != null
+        return usersData.data.value != User.EMPTY
     }
 }

@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import rma.catquiz.user.User
 import rma.catquiz.user.UserSerializer
 import javax.inject.Singleton
 
@@ -18,7 +19,7 @@ object DataStoreModule {
 
     @Singleton
     @Provides
-    fun provideUserListDataStore (@ApplicationContext context: Context) : DataStore<rma.catquiz.user.UserData> {
+    fun provideUserListDataStore (@ApplicationContext context: Context) : DataStore<User> {
         return DataStoreFactory.create(
             produceFile = { context.dataStoreFile(fileName = "users.json") },
             serializer = UserSerializer()

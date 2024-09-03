@@ -35,8 +35,8 @@ class LeaderboardViewModel @Inject constructor(
         viewModelScope.launch {
             setLeaderboardState { copy(isLoading = true) }
             try {
-                val list = catsService.fetchAllResultsForCategory(category = categ)
-                setLeaderboardState { copy(results = list, nick = usersDataStore.data.value.users[usersDataStore.data.value.pick].nickname) }
+                val list = catsService.fetchAllResultsForCategory(category = 3)
+                setLeaderboardState { copy(results = list, nick = usersDataStore.data.value.nickname) }
             }catch (error: IOException){
                 setLeaderboardState { copy(error = ILeaderboardContract.LeaderboardState.DetailsError.DataUpdateFailed(cause = error)) }
             }finally {

@@ -4,7 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import rma.catquiz.cats.entities.cat.Cat
-import rma.catquiz.cats.entities.cat.CatImage
+import rma.catquiz.cats.entities.image.CatGallery
 
 interface ICatListInterface {
     @GET("breeds")
@@ -14,5 +14,5 @@ interface ICatListInterface {
     suspend fun getCat(@Path("id") id: String): Cat
 
     @GET("images/search?limit=20")
-    suspend fun getAllCatsPhotos(@Query("breed_ids") id: String): List<CatImage>
+    suspend fun getAllCatsPhotos(@Query("breed_ids") id: String): List<CatGallery>
 }

@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
@@ -53,8 +51,6 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,17 +65,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import coil.compose.SubcomposeAsyncImage
-import com.example.catapult.cats.list.CatsViewModel
-import com.example.catapult.cats.list.ICatsContract.CatsListState
-import com.example.catapult.cats.list.ICatsContract.CatsListUIEvent
 import kotlinx.coroutines.launch
 import rma.catquiz.R
 import rma.catquiz.cats.entities.cat.Cat
 import rma.catquiz.ui.AppIconButton
 import rma.catquiz.ui.SimpleInfo
 import rma.catquiz.ui.defaultImage
-import rma.catquiz.ui.getPic
-import rma.catquiz.ui.isDefaultImage
 import rma.catquiz.user.User
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,7 +89,7 @@ fun NavGraphBuilder.catsListScreen(
         scope.launch { drawerState.close() }
     }
 
-    if (catsState.usersData.pick == -1) {
+    if (catsState.userData == User.EMPTY) {
         navController.navigate("login")
     }
     else {
@@ -136,7 +127,7 @@ fun NavGraphBuilder.catsListScreen(
                                 AppIconButton(
                                     imageVector = if (catsState.darkTheme) Icons.Outlined.LightMode else Icons.Filled.LightMode,
                                     onClick = {
-                                        catsViewModel.setCatsEvent(CatsListUIEvent.ChangeTheme(!catsState.darkTheme))
+                                        catsViewModel.setCatsEvent(ICatsContract.CatsListUIEvent.ChangeTheme(!catsState.darkTheme))
                                     })
                             }
                         )
@@ -171,7 +162,7 @@ fun NavGraphBuilder.catsListScreen(
 
 @Composable
 private fun UserInfoDrawer(
-    catsState: CatsListState,
+    catsState: ICatsContract.CatsListState,
     catsViewModel: CatsViewModel,
     addNewUser: () -> Unit,
     navigateToHistory: () -> Unit,
@@ -213,19 +204,19 @@ private fun UserInfoDrawer(
                         onClick = addNewUser
                     )
 
-                    LazyColumn(
-                        modifier = Modifier.heightIn(max = 180.dp)
-                    ) {
-                        itemsIndexed(catsState.usersData.users) { index, user ->
-                            UserItemDrawer(
-                                user = user,
-                                index = index,
-                                catsState = catsState,
-                                changeUserOnClick = { catsViewModel.changeMainUser(pick = index) },
-                                navigateToEdit = navigateToEdit
-                            )
-                        }
-                    }
+//                    LazyColumn(
+//                        modifier = Modifier.heightIn(max = 180.dp)
+//                    ) {
+//                        itemsIndexed(catsState.usersData.users) { index, user ->
+//                            UserItemDrawer(
+//                                user = user,
+//                                index = index,
+//                                catsState = catsState,
+//                                changeUserOnClick = { catsViewModel.changeMainUser(pick = index) },
+//                                navigateToEdit = navigateToEdit
+//                            )
+//                        }
+//                    }
                 }
 
                 HorizontalDivider()
@@ -294,8 +285,8 @@ private fun UserInfoDrawer(
                             imageVector = Icons.AutoMirrored.Filled.Logout,
                             onClick = {
                                 catsViewModel.setCatsEvent(
-                                    CatsListUIEvent.Logout(
-                                        user = catsState.usersData.users[catsState.usersData.pick]
+                                    ICatsContract.CatsListUIEvent.Logout(
+                                        user = catsState.userData
                                     )
                                 )
                             }
@@ -310,8 +301,8 @@ private fun UserInfoDrawer(
                     selected = false,
                     onClick = {
                         catsViewModel.setCatsEvent(
-                            CatsListUIEvent.Logout(
-                                user = catsState.usersData.users[catsState.usersData.pick]
+                            ICatsContract.CatsListUIEvent.Logout(
+                                user = catsState.userData
                             )
                         )
                     }
@@ -324,17 +315,9 @@ private fun UserInfoDrawer(
 @Composable
 private fun UserItemDrawer(
     user: User,
-    index: Int,
-    catsState: CatsListState,
-    changeUserOnClick: () -> Unit,
+    catsState: ICatsContract.CatsListState,
     navigateToEdit: () -> Unit,
 ) {
-
-    val bitmap by remember {
-        mutableStateOf(
-            if (isDefaultImage(user.image)) null else getPic(user.image)
-        )
-    }
 
     NavigationDrawerItem(
         icon = {
@@ -343,7 +326,7 @@ private fun UserItemDrawer(
                     .size(48.dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop,
-                model = bitmap ?: defaultImage(),
+                model = defaultImage(),
                 contentDescription = null,
                 loading = {
                     Box(modifier = Modifier.fillMaxSize()) {
@@ -372,24 +355,24 @@ private fun UserItemDrawer(
                     )
                 }
 
-                if (index == catsState.usersData.pick) {
+
                     AppIconButton(
                         imageVector = Icons.Filled.Edit,
-                        onClick = if (index == (catsState.usersData.pick)) navigateToEdit else changeUserOnClick
+                        onClick = navigateToEdit
                     )
-                }
+
             }
         },
-        selected = index == (catsState.usersData.pick),
-        onClick = if (index == (catsState.usersData.pick)) navigateToEdit else changeUserOnClick,
+        selected = true,
+        onClick = navigateToEdit
     )
 }
 
 @Composable
 fun CatsList(
-    catsState: CatsListState,
+    catsState: ICatsContract.CatsListState,
     paddingValues: PaddingValues,
-    eventPublisher: (uiEvent: CatsListUIEvent) -> Unit,
+    eventPublisher: (uiEvent: ICatsContract.CatsListUIEvent) -> Unit,
     onClick: (Cat) -> Unit
 ) {
 
@@ -402,7 +385,7 @@ fun CatsList(
         TextField(
             value = catsState.searchText,
             onValueChange = { text ->
-                eventPublisher(CatsListUIEvent.SearchQueryChanged(query = text))
+                eventPublisher(ICatsContract.CatsListUIEvent.SearchQueryChanged(query = text))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -432,7 +415,7 @@ fun CatsList(
                 contentAlignment = Alignment.Center
             ) {
                 val errorMessage = when (catsState.error) {
-                    is CatsListState.DetailsError.DataUpdateFailed ->
+                    is ICatsContract.CatsListState.DetailsError.DataUpdateFailed ->
                         "Failed to load. Error message: ${catsState.error.cause?.message}."
                 }
 

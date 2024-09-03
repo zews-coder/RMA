@@ -6,7 +6,7 @@ import rma.catquiz.cats.api.interfaces.ICatListInterface
 import rma.catquiz.cats.api.interfaces.IResultsInterface
 import rma.catquiz.cats.entities.cat.Cat
 import rma.catquiz.cats.entities.cat.CatDao
-import rma.catquiz.cats.entities.cat.CatImage
+import rma.catquiz.cats.entities.image.CatGallery
 import rma.catquiz.cats.entities.image.CatImageDao
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ class CatService @Inject constructor(
 
     fun getAllCatImagesByIdFlow(id: String): Flow<List<String>> = catImageDao.getAllImagesForId(id)
 
-    suspend fun getAllCatsPhotosApi(id: String): List<CatImage> {
+    suspend fun getAllCatsPhotosApi(id: String): List<CatGallery> {
         val images = catApi.getAllCatsPhotos(id).map { it.copy(id = id) }
         catImageDao.insertAllGalleryCats(cats = images)
         return images

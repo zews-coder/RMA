@@ -8,11 +8,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.catapult.cats.list.catsListScreen
 import rma.catquiz.cats.details.catDetailsScreen
 import rma.catquiz.cats.leaderboard.leaderboardScreen
+import rma.catquiz.cats.list.catsListScreen
 import rma.catquiz.cats.login.loginScreen
 import rma.catquiz.cats.quiz.quizScreen
+import rma.catquiz.cats.result.resultScreen
 import rma.catquiz.user.edit.editScreen
 import rma.catquiz.user.history.historyScreen
 
@@ -56,30 +57,31 @@ fun AppNavigation() {
             })
         )
 
-        catGalleryScreen(
-            route = "images/{id}",
-            navController = navController,
-            arguments = listOf(navArgument("id") {
-                type = NavType.StringType
-            }),
-            onPhotoClicked = {id,photoIndex->
-                navController.navigate(route = "photo/${id}/${photoIndex}")
-            }
-        )
-        catPhotoScreen(
-            route = "photo/{id}/{photoIndex}",
-            navController = navController,
-            arguments = listOf(navArgument("id") {
-                type = NavType.StringType
-            }, navArgument("photoIndex") {
-                type = NavType.IntType
-            }),
-        )
+//        catGalleryScreen(
+//            route = "images/{id}",
+//            navController = navController,
+//            arguments = listOf(navArgument("id") {
+//                type = NavType.StringType
+//            }),
+//            onPhotoClicked = {id,photoIndex->
+//                navController.navigate(route = "photo/${id}/${photoIndex}")
+//            }
+//        )
+//        catPhotoScreen(
+//            route = "photo/{id}/{photoIndex}",
+//            navController = navController,
+//            arguments = listOf(navArgument("id") {
+//                type = NavType.StringType
+//            }, navArgument("photoIndex") {
+//                type = NavType.IntType
+//            }),
+//        )
 
         quizScreen(
             route = "quiz/left-right-cat",
             navController = navController
         )
+
         resultScreen(
             route = "quiz/result/{category}/{result}",
             navController = navController,

@@ -1,6 +1,12 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("androidx.navigation.safeargs.kotlin")
+    kotlin("plugin.serialization") version "1.9.22"
+    id("com.google.dagger.hilt.android")
+    //Room
+    id("androidx.room")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -18,6 +24,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+    }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
 
     buildTypes {
@@ -98,7 +108,7 @@ dependencies {
     //Hilt
     val hiltVersion = "2.51"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
-//    ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
     // Hilt Compose Navigation support (hiltViewModel factory)
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
@@ -107,7 +117,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-//    ksp("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     //DataStore
     implementation("androidx.datastore:datastore:1.1.1")

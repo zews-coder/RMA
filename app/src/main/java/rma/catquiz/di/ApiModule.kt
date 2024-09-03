@@ -15,6 +15,7 @@ import rma.catquiz.cats.api.interfaces.IResultsInterface
 import rma.catquiz.cats.api.serialization.JsonAndClass
 import javax.inject.Named
 import javax.inject.Singleton
+
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {

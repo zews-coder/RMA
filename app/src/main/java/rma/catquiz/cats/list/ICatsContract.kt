@@ -1,14 +1,12 @@
-package com.example.catapult.cats.list
+package rma.catquiz.cats.list
 
-import android.service.autofill.UserData
 import rma.catquiz.cats.entities.cat.Cat
 import rma.catquiz.user.User
-
 
 interface ICatsContract {
     data class CatsListState(
         val isLoading: Boolean = false,
-        val userData: UserData,
+        val userData: User,
         val darkTheme: Boolean,
         val cats: List<Cat> = emptyList(),
         val catsFiltered: List<Cat> = emptyList(),
