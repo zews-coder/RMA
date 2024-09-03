@@ -10,16 +10,16 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.nio.charset.StandardCharsets
 
-class UserDataSerializer() : Serializer<UserData> {
+class UserSerializer() : Serializer<User> {
 
     private val json: Json = JsonAndClass
 
-    override val defaultValue: UserData = UserData.EMPTY
+    override val defaultValue: User = User.EMPTY
 
-    override suspend fun readFrom(input: InputStream): UserData {
+    override suspend fun readFrom(input: InputStream): User {
         val text = String(input.readBytes(), charset = StandardCharsets.UTF_8)
         return try {
-            json.decodeFromString<UserData>(text)
+            json.decodeFromString<User>(text)
         } catch (error: SerializationException) {
             throw CorruptionException(message = "Unable to deserialize file.", cause = error)
         } catch (error: IllegalArgumentException) {
@@ -27,7 +27,7 @@ class UserDataSerializer() : Serializer<UserData> {
         }
     }
 
-    override suspend fun writeTo(t: UserData, output: OutputStream) {
+    override suspend fun writeTo(t: User, output: OutputStream) {
         val text = json.encodeToString(t)
         output.write(text.toByteArray())
     }

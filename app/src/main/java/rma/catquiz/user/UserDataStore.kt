@@ -15,7 +15,7 @@ import kotlin.math.max
 @Singleton
 class UserDataStore@Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
-    private val dataStore: DataStore<UserData>
+    private val dataStore: DataStore<User>
 ) {
     private val scope = CoroutineScope(dispatcherProvider.io())
 
@@ -25,11 +25,12 @@ class UserDataStore@Inject constructor(
         initialValue = runBlocking { dataStore.data.first() }
     )
 
-    suspend fun addUser(user: User): UserData {
-        val users = data.value.users.toMutableList()
-        users.add(user)
+    suspend fun addUser(user: User){
+        dataStore.updateData { user }
+    }
 
-        return updateList(users = users.toImmutableList(), pick = users.size - 1)
+    suspend fun removeUser(user: User){
+        dataStore.updateData { User.EMPTY }
     }
 
     suspend fun addResult(result: QuizResult): User {

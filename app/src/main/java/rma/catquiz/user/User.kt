@@ -24,15 +24,6 @@ data class User(
 }
 
 @Serializable
-data class UserData (
-    val user: User?,
-) {
-    companion object {
-        val EMPTY = UserData(user = null)
-    }
-}
-
-@Serializable
 data class UserQuiz(
     val resultsHistory: List<QuizResult> = emptyList(),
     val bestResult: Float = 0f,

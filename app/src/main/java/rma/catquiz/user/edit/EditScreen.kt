@@ -122,16 +122,6 @@ fun LoginScreen(
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            if (uri != null) {
-                val imageView = ImageView(context)
-                imageView.setImageURI(uri)
-                onClick(
-                    IEditContract.EditUIEvent.ImageChanged(
-                        imageView = imageView,
-                        pictureName = editState.email
-                    )
-                )
-            }
         }
     )
 

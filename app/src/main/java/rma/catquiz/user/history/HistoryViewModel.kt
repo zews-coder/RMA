@@ -18,7 +18,7 @@ class HistoryViewModel @Inject constructor(
     private val userDataStore: UserDataStore
 ) : ViewModel() {
 
-    private val _historyState = MutableStateFlow(IHistoryContract.HistoryState(usersData = userDataStore.data.value))
+    private val _historyState = MutableStateFlow(IHistoryContract.HistoryState(userData = userDataStore.data.value))
     val historyState = _historyState.asStateFlow()
 
     private val _historyEvent = MutableSharedFlow<IHistoryContract.HistoryUIEvent>()
@@ -32,25 +32,19 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun getBestResult(quiz : String): String {
-        val users = historyState.value.usersData.users
-        val pick = historyState.value.usersData.pick
+        val user = historyState.value.userData
 
         return when (quiz) {
-            "guessCat" -> users[pick].guessCat.bestResult.toString()
-            "guessFact" -> users[pick].guessFact.bestResult.toString()
-            "leftRightCat" -> users[pick].leftRightCat.bestResult.toString()
+            "leftRightCat" -> user.quiz.bestResult.toString()
             else -> "0.0"
         }
     }
 
     fun getAllResults(quiz: String): List<QuizResult> {
-        val users = historyState.value.usersData.users
-        val pick = historyState.value.usersData.pick
+        val user = historyState.value.userData
 
         return when (quiz) {
-            "guessCat" -> users[pick].guessCat.resultsHistory.reversed()
-            "guessFact" -> users[pick].guessFact.resultsHistory.reversed()
-            "leftRightCat" -> users[pick].leftRightCat.resultsHistory.reversed()
+            "leftRightCat" -> user.quiz.resultsHistory.reversed()
             else -> emptyList<QuizResult>()
         }
     }
