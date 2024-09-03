@@ -41,7 +41,6 @@ fun AppNavigation() {
 
         loginScreen( //add-new-user
             route = "login?add-new-user={addNewUser}",
-//            route = "login/{addNewUser}",
             arguments = listOf(navArgument("addNewUser"){
                defaultValue = false
                type = NavType.BoolType
@@ -92,6 +91,7 @@ fun AppNavigation() {
             type = NavType.FloatType
             }  )
         )
+
         leaderboardScreen(
             route = "quiz/leaderboard/{category}",
             navController = navController,
@@ -101,28 +101,27 @@ fun AppNavigation() {
                 }
             )
         )
+
         historyScreen(
             route = "history",
             navController = navController
         )
+
         editScreen(
             route = "user/edit",
             navController = navController
         )
     }
-
 }
 
 inline val SavedStateHandle.catId: String
     get() = checkNotNull(get("id")) {"catId is mandatory"}
-
 inline val SavedStateHandle.photoIndex: Int
     get() = checkNotNull(get("photoIndex")) {"photoIndex is mandatory"}
 inline val SavedStateHandle.category: Int
     get() = checkNotNull(get("category")) {"category is mandatory"}
 inline val SavedStateHandle.result: Float
     get() = checkNotNull(get("result")) {"result is mandatory"}
-
 inline val SavedStateHandle.addNewUser: Boolean
     get() = get("addNewUser") ?: false
 

@@ -18,7 +18,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-//    private val analytics = AppAnalytics()
     @Inject
     lateinit var userDataStore: UserDataStore
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +32,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//val LocalAnalytics = compositionLocalOf<AppAnalytics> {
-//    error("Analytics not provided")
-//}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {

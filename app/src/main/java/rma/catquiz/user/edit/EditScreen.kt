@@ -1,6 +1,5 @@
 package rma.catquiz.user.edit
 
-import android.widget.ImageView
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -83,9 +82,7 @@ fun NavGraphBuilder.editScreen(
             }
         )
     }
-
 }
-
 
 @Composable
 fun LoginScreen(

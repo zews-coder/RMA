@@ -34,7 +34,6 @@ import rma.catquiz.ui.AppIconButton
 import rma.catquiz.ui.TopBar
 import rma.catquiz.user.QuizResult
 
-
 fun NavGraphBuilder.historyScreen(
     route: String,
     navController: NavController,
@@ -61,26 +60,6 @@ fun NavGraphBuilder.historyScreen(
                     verticalArrangement = Arrangement.SpaceEvenly
 
                 ) {
-                    Card {
-                        CardContent(
-                            bestResult = historyViewModel.getBestResult("guessFact"),
-                            historyState = historyState,
-                            index = 0,
-                            title = "Guess Fact",
-                            results = historyViewModel.getAllResults("guessFact"),
-                            onClick = { uiEvent -> historyViewModel.setHistoryEvent(uiEvent) }
-                        )
-                    }
-                    Card {
-                        CardContent(
-                            bestResult = historyViewModel.getBestResult("guessCat"),
-                            historyState = historyState,
-                            index = 1,
-                            title = "Guess Cat",
-                            results = historyViewModel.getAllResults("guessCat"),
-                            onClick = { uiEvent -> historyViewModel.setHistoryEvent(uiEvent) }
-                        )
-                    }
                     Card {
                         CardContent(
                             bestResult = historyViewModel.getBestResult("leftRightCat"),

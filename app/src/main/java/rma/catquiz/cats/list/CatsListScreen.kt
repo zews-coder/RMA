@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,7 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Leaderboard
@@ -182,42 +182,23 @@ private fun UserInfoDrawer(
 
                 Column {
                     Text(
-                        text = "Accounts",
+                        text = "Account",
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                     )
-
-                    NavigationDrawerItem(
-                        icon = {
-                            AppIconButton(
-                                imageVector = Icons.Filled.Add,
-                                onClick = addNewUser
+                    LazyColumn(
+                        modifier = Modifier.heightIn(max = 180.dp)
+                    ) {
+                        items(1) { user ->
+                            UserItemDrawer(
+                                user = catsState.userData,
+                                catsState = catsState,
+                                navigateToEdit = navigateToEdit
                             )
-                        },
-                        label = {
-                            Text(
-                                text = "Add Account",
-                                style = MaterialTheme.typography.labelLarge
-                            )
-                        },
-                        selected = false,
-                        onClick = addNewUser
-                    )
-
-//                    LazyColumn(
-//                        modifier = Modifier.heightIn(max = 180.dp)
-//                    ) {
-//                        itemsIndexed(catsState.usersData.users) { index, user ->
-//                            UserItemDrawer(
-//                                user = user,
-//                                index = index,
-//                                catsState = catsState,
-//                                changeUserOnClick = { catsViewModel.changeMainUser(pick = index) },
-//                                navigateToEdit = navigateToEdit
-//                            )
-//                        }
-//                    }
+                        }
+                    }
                 }
+            }
 
                 HorizontalDivider()
 
@@ -267,7 +248,7 @@ private fun UserInfoDrawer(
                         },
                         label = {
                             Text(
-                                text = "Left Right Cat",
+                                text = "Results",
                                 style = MaterialTheme.typography.labelLarge
                             )
                         },
@@ -309,11 +290,11 @@ private fun UserInfoDrawer(
                 )
             }
         }
-    }
+
 }
 
 @Composable
-private fun UserItemDrawer(
+fun UserItemDrawer(
     user: User,
     catsState: ICatsContract.CatsListState,
     navigateToEdit: () -> Unit,
@@ -458,14 +439,6 @@ fun CatDetails(
 
             SimpleInfo(title = "Race Of Cat", description = cat.name)
             Spacer(modifier = Modifier.height(16.dp))
-
-//            if (!cat.altNames.isNullOrEmpty()) {
-//                ListInfo(
-//                    title = "Alternative Names",
-//                    items = cat.altNames.replace(" ", "").split(",")
-//                )
-//                Spacer(modifier = Modifier.height(16.dp))
-//            }
 
             SimpleInfo(title = "Description", description = cat.description)
             Spacer(modifier = Modifier.height(16.dp))

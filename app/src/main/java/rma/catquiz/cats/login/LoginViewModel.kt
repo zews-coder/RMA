@@ -90,7 +90,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    //TODO
     fun hasAccount(): Boolean {
         return usersData.data.value != User.EMPTY
     }

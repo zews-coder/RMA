@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -29,7 +28,6 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-
 
 fun NavGraphBuilder.loginScreen(
     route: String,
@@ -84,12 +82,6 @@ fun LoginScreen(
                 ) {
 
                     Text(text = "Hello, please enter your info", style = MaterialTheme.typography.headlineSmall)
-
-//                    Image(
-//                        modifier = Modifier.fadingEdge(radialFade).size(240.dp),
-//                        painter = painterResource(id = R.drawable.login_cat),
-//                        contentDescription = "login cat photo",
-//                    )
 
                     Column (
                         horizontalAlignment = Alignment.CenterHorizontally,

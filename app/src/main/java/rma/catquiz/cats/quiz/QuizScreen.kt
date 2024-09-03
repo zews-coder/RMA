@@ -197,7 +197,6 @@ fun QuizScreen(
                     model = question.images[1],
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-    //                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiaryContainer, blendMode = BlendMode.Color),
                     loading = {
                         Box(modifier = Modifier.fillMaxSize()) {
                             CircularProgressIndicator(
