@@ -112,7 +112,10 @@ fun NavGraphBuilder.catsListScreen(
                     topBar = {
                         TopAppBar(
                             title = {
-                                Text(text = "CatQuiz_jristic3620rn", style = MaterialTheme.typography.labelLarge)
+                                Text(
+                                    text = "CatQuiz_jristic3620rn",
+                                    style = MaterialTheme.typography.labelLarge
+                                )
                             },
                             navigationIcon = {
                                 AppIconButton(
@@ -210,6 +213,7 @@ private fun UserInfoDrawer(
             }
 
             HorizontalDivider()
+            Spacer(modifier = Modifier.height(7.dp))
 
             Column {
                 Text(
@@ -227,7 +231,7 @@ private fun UserInfoDrawer(
                     },
                     label = {
                         Text(
-                            text = "See quiz's history",
+                            text = "Quiz history",
                             style = MaterialTheme.typography.labelLarge
                         )
                     },
@@ -242,7 +246,6 @@ private fun UserInfoDrawer(
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(start = 16.dp)
                 )
-
 
                 NavigationDrawerItem(
                     icon = {
@@ -347,6 +350,7 @@ fun CatsList(
             .padding(paddingValues)
     ) {
 
+        //SEARCH BAR
         TextField(
             value = catsState.searchText,
             onValueChange = { text ->
@@ -418,7 +422,7 @@ fun CatDetails(
     ) {
 
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(12.dp)
         ) {
 
             SimpleInfo(title = "Race Of Cat", description = cat.name)

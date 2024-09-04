@@ -16,15 +16,15 @@ class CatService @Inject constructor(
     private val catApi: ICatListInterface,
     private val resultsApi: IResultsInterface
 ) {
-    suspend fun fetchAllCatsFromApi() {
-        catDao.insertAllCats(cats = catApi.getAllCats())
-    }
-
     fun getAllCatsFlow(): Flow<List<Cat>> = catDao.getAllCats()
 
     fun getCatByIdFlow(id: String): Flow<Cat> = catDao.getCatById(id)
 
     fun getAllCatImagesByIdFlow(id: String): Flow<List<String>> = catGalleryDao.getAllImagesForId(id)
+
+    suspend fun fetchAllCatsFromApi() {
+        catDao.insertAllCats(cats = catApi.getAllCats())
+    }
 
     suspend fun getAllCatsPhotosApi(id: String): List<CatGallery> {
         val images = catApi.getAllCatsPhotos(id).map { it.copy(id = id) }
@@ -40,5 +40,4 @@ class CatService @Inject constructor(
         val dto = ResultDto(nickname,result,category)
         resultsApi.postResult(dto)
     }
-
 }

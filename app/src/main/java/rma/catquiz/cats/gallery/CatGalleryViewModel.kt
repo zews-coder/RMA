@@ -35,7 +35,6 @@ class CatGalleryViewModel @Inject constructor(
     }
 
     private fun observeCatGallery() {
-
         viewModelScope.launch {
             setCatGalleryState { copy(isLoading = true) }
             try {
@@ -53,7 +52,6 @@ class CatGalleryViewModel @Inject constructor(
             }finally {
                 setCatGalleryState { copy(photos = photos, isLoading = false) }
             }
-
         }
     }
 

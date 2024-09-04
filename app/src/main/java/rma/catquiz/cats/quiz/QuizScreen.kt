@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -59,7 +59,7 @@ fun NavGraphBuilder.quizScreen(
                     },
                     navigationIcon = {
                         AppIconButton(
-                            imageVector = Icons.Filled.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             onClick = { navController.navigateUp() })
                     }
                 )
