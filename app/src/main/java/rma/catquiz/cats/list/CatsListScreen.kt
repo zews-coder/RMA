@@ -22,7 +22,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Leaderboard
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Menu
@@ -70,7 +69,6 @@ import rma.catquiz.R
 import rma.catquiz.cats.entities.cat.Cat
 import rma.catquiz.ui.AppIconButton
 import rma.catquiz.ui.SimpleInfo
-import rma.catquiz.ui.defaultImage
 import rma.catquiz.user.User
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,8 +89,7 @@ fun NavGraphBuilder.catsListScreen(
 
     if (catsState.userData == User.EMPTY) {
         navController.navigate("login")
-    }
-    else {
+    } else {
         Surface(
             tonalElevation = 1.dp
         ) {
@@ -115,7 +112,7 @@ fun NavGraphBuilder.catsListScreen(
                     topBar = {
                         TopAppBar(
                             title = {
-                                Text(text = "Catapult", style = MaterialTheme.typography.labelLarge)
+                                Text(text = "CatQuiz_jristic3620rn", style = MaterialTheme.typography.labelLarge)
                             },
                             navigationIcon = {
                                 AppIconButton(
@@ -127,25 +124,36 @@ fun NavGraphBuilder.catsListScreen(
                                 AppIconButton(
                                     imageVector = if (catsState.darkTheme) Icons.Outlined.LightMode else Icons.Filled.LightMode,
                                     onClick = {
-                                        catsViewModel.setCatsEvent(ICatsContract.CatsListUIEvent.ChangeTheme(!catsState.darkTheme))
+                                        catsViewModel.setCatsEvent(
+                                            ICatsContract.CatsListUIEvent.ChangeTheme(
+                                                !catsState.darkTheme
+                                            )
+                                        )
                                     })
                             }
                         )
                     },
+                    //Dugme za pocetak kviza
                     floatingActionButton = {
                         LargeFloatingActionButton(
-                            onClick = {
-                                goToQuiz()
-                            },
+                            onClick = { goToQuiz() },
                             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                            contentColor = MaterialTheme.colorScheme.tertiary,
+                            contentColor = MaterialTheme.colorScheme.tertiary
                         ) {
-                            Icon(
-                                painterResource(id = R.drawable.quiz),
-                                contentDescription = "Floating action button."
-                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(text = "QUIZ")
+                                Spacer(modifier = Modifier.height(1.dp))
+                                Icon(
+                                    painter = painterResource(id = R.drawable.quiz100),
+                                    contentDescription = "Floating action button."
+                                )
+                            }
                         }
                     },
+
                     content = {
                         CatsList(
                             catsState = catsState,
@@ -193,103 +201,72 @@ private fun UserInfoDrawer(
                             UserItemDrawer(
                                 user = catsState.userData,
                                 catsState = catsState,
-                                navigateToEdit = navigateToEdit
+                                navigateToEdit = navigateToEdit,
+                                catsViewModel = catsViewModel
                             )
                         }
                     }
                 }
             }
 
-                HorizontalDivider()
+            HorizontalDivider()
 
-                Column {
-                    Text(
-                        text = "History",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
+            Column {
+                Text(
+                    text = "History",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
 
-                    NavigationDrawerItem(
-                        icon = {
-                            AppIconButton(
-                                imageVector = Icons.Filled.Category,
-                                onClick = addNewUser
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "See quiz's history",
-                                style = MaterialTheme.typography.labelLarge
-                            )
-                        },
-                        selected = false,
-                        onClick = navigateToHistory
-                    )
-                }
-
-                HorizontalDivider()
-
-                Column {
-                    Text(
-                        text = "Leaderboards",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
-
-
-                    NavigationDrawerItem(
-                        icon = {
-                            AppIconButton(
-                                imageVector = Icons.Filled.Leaderboard,
-                                onClick = {
-                                    leaderboard(3)
-                                }
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "Results",
-                                style = MaterialTheme.typography.labelLarge
-                            )
-                        },
-                        selected = false,
-                        onClick = {
-                            leaderboard(3)
-                        }
-                    )
-                }
-
-                Spacer(modifier = Modifier.padding(top = 20.dp))
                 NavigationDrawerItem(
                     icon = {
                         AppIconButton(
-                            imageVector = Icons.AutoMirrored.Filled.Logout,
+                            imageVector = Icons.Filled.Category,
+                            onClick = addNewUser
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = "See quiz's history",
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    },
+                    selected = false,
+                    onClick = navigateToHistory
+                )
+            }
+
+            Column {
+                Text(
+                    text = "Leaderboard",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+
+
+                NavigationDrawerItem(
+                    icon = {
+                        AppIconButton(
+                            imageVector = Icons.Filled.Leaderboard,
                             onClick = {
-                                catsViewModel.setCatsEvent(
-                                    ICatsContract.CatsListUIEvent.Logout(
-                                        user = catsState.userData
-                                    )
-                                )
+                                leaderboard(3)
                             }
                         )
                     },
                     label = {
                         Text(
-                            text = "Logout",
+                            text = "Results",
                             style = MaterialTheme.typography.labelLarge
                         )
                     },
                     selected = false,
                     onClick = {
-                        catsViewModel.setCatsEvent(
-                            ICatsContract.CatsListUIEvent.Logout(
-                                user = catsState.userData
-                            )
-                        )
+                        leaderboard(3)
                     }
                 )
             }
         }
+    }
 
 }
 
@@ -298,6 +275,7 @@ fun UserItemDrawer(
     user: User,
     catsState: ICatsContract.CatsListState,
     navigateToEdit: () -> Unit,
+    catsViewModel: CatsViewModel,
 ) {
 
     NavigationDrawerItem(
@@ -307,7 +285,7 @@ fun UserItemDrawer(
                     .size(48.dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop,
-                model = defaultImage(),
+                model = R.drawable.user,
                 contentDescription = null,
                 loading = {
                     Box(modifier = Modifier.fillMaxSize()) {
@@ -336,11 +314,17 @@ fun UserItemDrawer(
                     )
                 }
 
-
-                    AppIconButton(
-                        imageVector = Icons.Filled.Edit,
-                        onClick = navigateToEdit
-                    )
+                //LOGOUT button
+                AppIconButton(
+                    imageVector = Icons.AutoMirrored.Filled.Logout,
+                    onClick = {
+                        catsViewModel.setCatsEvent(
+                            ICatsContract.CatsListUIEvent.Logout(
+                                user = catsState.userData
+                            )
+                        )
+                    }
+                )
 
             }
         },

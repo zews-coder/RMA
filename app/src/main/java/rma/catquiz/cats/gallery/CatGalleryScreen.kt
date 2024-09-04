@@ -1,25 +1,30 @@
-package rma.catquiz.cats.details
+package rma.catquiz.cats.gallery
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,47 +33,59 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import coil.compose.SubcomposeAsyncImage
-import rma.catquiz.cats.entities.cat.Cat
-import rma.catquiz.ui.ListInfo
-import rma.catquiz.ui.SimpleInfo
-import rma.catquiz.ui.TopBar
+import rma.catquiz.ui.AppIconButton
 
-fun NavGraphBuilder.catDetailsScreen(
+@OptIn(ExperimentalMaterial3Api::class)
+fun NavGraphBuilder.catGalleryScreen(
     route: String,
     navController: NavController,
-    arguments: List<NamedNavArgument>
+    arguments: List<NamedNavArgument>,
+    onPhotoClicked: (catId: String, photoIndex: Int) -> Unit
 ) = composable(route = route, arguments = arguments) { navBackStackEntry ->
 
-    val catDetailsViewModel: CatDetailsViewModel = hiltViewModel(navBackStackEntry)
-    val catState by catDetailsViewModel.catDetailsState.collectAsState()
+    val catGalleryViewModel: CatGalleryViewModel = hiltViewModel(navBackStackEntry)
+    val catState by catGalleryViewModel.catGalleryState.collectAsState()
+
 
     Surface(
         tonalElevation = 1.dp
     ) {
         Scaffold(
             topBar = {
-                TopBar(onBackClick = { navController.navigateUp() })
+                TopAppBar(
+                    title = {
+                        Text(text = "Photo gallery", fontWeight = FontWeight.Bold)
+                    },
+                    navigationIcon = {
+                        AppIconButton(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            onClick = { navController.navigateUp() })
+                    }
+                )
             },
             content = { paddingValues ->
-                CatDetailsScreen(
+                CatGalleryScreen(
                     catState = catState,
                     paddingValues = paddingValues,
-                    openGallery = { id -> navController.navigate("images/${id}") }
+                    onPhotoClicked = onPhotoClicked
                 )
-
             }
         )
     }
 }
 
 @Composable
-private fun CatDetailsScreen(
-    catState: ICatDetailsContract.CatDetailsState,
+fun CatGalleryScreen(
+    catState: ICatGalleryContract.CatGalleryState,
     paddingValues: PaddingValues,
-    openGallery: (String) -> Unit,
+    onPhotoClicked: (catId: String, photoNumber: Int) -> Unit
 ) {
     if (catState.isLoading) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center)
             )
@@ -76,42 +93,45 @@ private fun CatDetailsScreen(
     } else if (catState.error != null) {
         Box(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(paddingValues)
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             val errorMessage = when (catState.error) {
-                is ICatDetailsContract.CatDetailsState.DetailsError.DataUpdateFailed ->
+                is ICatGalleryContract.CatGalleryState.DetailsError.DataUpdateFailed ->
                     "Failed to load. Error message: ${catState.error.cause?.message}."
             }
 
             Text(text = errorMessage, fontSize = 20.sp)
         }
-    } else if (catState.data == null) {
+    } else if (catState.photos.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize()) {
             Text(
-                text = "There is no data for id ${catState.catId}",
+                text = "There is no data for that cat",
                 fontSize = 20.sp
             )
         }
     } else {
-        Box(
+        LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
+            columns = GridCells.Fixed(2),
+            contentPadding = paddingValues
         ) {
 
-            val scrollState = rememberScrollState()
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .verticalScroll(scrollState)
-            ) {
+            itemsIndexed(items = catState.photos,
+                key = { index: Int, item: String ->
+                    item
+                }) { index: Int, item: String ->
                 SubcomposeAsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { openGallery(catState.catId) }, // Make the image clickable
-                    model = catState.data.image?.url ?: "",
+                        .aspectRatio(1f)
+                        .clickable {
+                            onPhotoClicked(catState.catId, index)
+                        },
+                    model = item,
                     contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     loading = {
                         Box(modifier = Modifier.fillMaxSize()) {
                             CircularProgressIndicator(
@@ -120,50 +140,7 @@ private fun CatDetailsScreen(
                         }
                     }
                 )
-
-                CatInformation(
-                    catState = catState,
-                    data = catState.data,
-                    openGallery = openGallery
-                )
             }
         }
-    }
-}
-
-@Composable
-private fun CatInformation(
-    catState: ICatDetailsContract.CatDetailsState,
-    data: Cat,
-    openGallery: (String) -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        SimpleInfo(
-            title = "Race Of Cat",
-            description = data.name
-        )
-
-        SimpleInfo(
-            title = "Description",
-            description = data.description
-        )
-
-        ListInfo(title = "Countries Of Origin", items = data.origin.replace(" ", "").split(","))
-
-        ListInfo(title = "Temperament Traits", items = data.temperament.replace(" ", "").split(","))
-
-        SimpleInfo(
-            title = "Average Weight",
-            description = data.weight.metric
-        )
-
-        SimpleInfo(
-            title = "Life Span",
-            description = data.life
-        )
     }
 }

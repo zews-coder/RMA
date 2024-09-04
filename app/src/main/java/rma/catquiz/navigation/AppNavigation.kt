@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import rma.catquiz.cats.details.catDetailsScreen
+import rma.catquiz.cats.gallery.catGalleryScreen
 import rma.catquiz.cats.leaderboard.leaderboardScreen
 import rma.catquiz.cats.list.catsListScreen
 import rma.catquiz.cats.login.loginScreen
@@ -56,16 +57,17 @@ fun AppNavigation() {
             })
         )
 
-//        catGalleryScreen(
-//            route = "images/{id}",
-//            navController = navController,
-//            arguments = listOf(navArgument("id") {
-//                type = NavType.StringType
-//            }),
-//            onPhotoClicked = {id,photoIndex->
-//                navController.navigate(route = "photo/${id}/${photoIndex}")
-//            }
-//        )
+        catGalleryScreen(
+            route = "images/{id}",
+            navController = navController,
+            arguments = listOf(navArgument("id") {
+                type = NavType.StringType
+            }),
+            onPhotoClicked = {id,photoIndex->
+                navController.navigate(route = "photo/${id}/${photoIndex}")
+            }
+        )
+
 //        catPhotoScreen(
 //            route = "photo/{id}/{photoIndex}",
 //            navController = navController,

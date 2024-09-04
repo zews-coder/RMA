@@ -11,7 +11,7 @@ data class User(
     val email: String,
     val darkTheme: Boolean = false,
     val quiz: UserQuiz = UserQuiz.EMPTY,
-){
+) {
     companion object {
         val EMPTY = User(
             name = "",
@@ -43,13 +43,13 @@ data class QuizResult(
     val result: Float = 0f,
     val createdAt: Long
 ) {
-    fun getDate(): String{
+    fun getDate(): String {
         return covertToDate(createdAt)
     }
 
 
-    fun covertToDate(milliSeconds: Long): String {
-        val formatter = SimpleDateFormat("dd/MM/yyy hh:mm:ss")
+    private fun covertToDate(milliSeconds: Long): String {
+        val formatter = SimpleDateFormat("dd/MM/yy hh:mm:ss")
         val calendar: Calendar = Calendar.getInstance()
         calendar.setTimeInMillis(milliSeconds)
 

@@ -1,15 +1,6 @@
 package rma.catquiz.user.edit
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -30,26 +19,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import coil.compose.AsyncImage
-import rma.catquiz.ui.AppIconButton
+import rma.catquiz.R
 import rma.catquiz.ui.TopBar
-import rma.catquiz.ui.defaultImage
 
 fun NavGraphBuilder.editScreen(
     route: String,
@@ -91,37 +72,6 @@ fun LoginScreen(
     onClick: (uiEvent: IEditContract.EditUIEvent) -> Unit,
     onValueChange: (uiEvent: IEditContract.EditUIEvent) -> Unit
 ) {
-
-    val rainbowColorsBrush = remember {
-        Brush.sweepGradient(
-            listOf(
-                Color(0xFF9575CD),
-                Color(0xFFBA68C8),
-                Color(0xFFE57373),
-                Color(0xFFFFB74D),
-                Color(0xFFFFF176),
-                Color(0xFFAED581),
-                Color(0xFF4DD0E1),
-                Color(0xFF9575CD)
-            )
-        )
-    }
-
-    val infiniteTransition = rememberInfiniteTransition(label = "")
-    val rotationAnimation = infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(tween(3000, easing = LinearEasing)),
-        label = ""
-    )
-
-    val context = LocalContext.current
-    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri ->
-        }
-    )
-
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -138,19 +88,9 @@ fun LoginScreen(
             AsyncImage(
                 modifier = Modifier
                     .size(170.dp)
-                    .drawBehind {
-                        rotate(rotationAnimation.value) {
-                            drawCircle(rainbowColorsBrush, style = Stroke(width = 35f))
-                        }
-                    }
-                    .clip(CircleShape)
-                    .clickable {
-                        singlePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
-                    },
+                    .clip(CircleShape),
                 contentScale = ContentScale.Crop,
-                model = editState.bitmap ?: defaultImage(),
+                model = R.drawable.user,
                 contentDescription = null
             )
 
@@ -159,15 +99,7 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.secondaryContainer,
                     shape = CircleShape
                 )
-            ) {
-                AppIconButton(
-                    imageVector = Icons.Filled.Edit,
-                    onClick = {
-                        singlePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
-                    })
-            }
+            )
         }
 
         Column(
@@ -184,7 +116,7 @@ fun LoginScreen(
                         )
                     )
                 },
-                label = { Text("Name and Surname") },
+                label = { Text("Name") },
                 singleLine = true
             )
             OutlinedTextField(

@@ -2,9 +2,7 @@ package rma.catquiz.cats.details
 
 import rma.catquiz.cats.entities.cat.Cat
 
-
 interface ICatDetailsContract {
-
     data class CatDetailsState(
         val catId: String,
         val isLoading: Boolean = false,

@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.toImmutableList
 import rma.catquiz.cats.entities.CatService
 import rma.catquiz.di.DispatcherProvider
 import rma.catquiz.user.User
