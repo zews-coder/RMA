@@ -113,7 +113,7 @@ fun NavGraphBuilder.catsListScreen(
                         TopAppBar(
                             title = {
                                 Text(
-                                    text = "CatQuiz_jristic3620rn",
+                                    text = "Catapult",
                                     style = MaterialTheme.typography.labelLarge
                                 )
                             },

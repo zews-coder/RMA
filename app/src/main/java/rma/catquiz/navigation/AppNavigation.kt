@@ -31,6 +31,15 @@ fun AppNavigation() {
         popExitTransition = { slideOutHorizontally { it }}
     ) {
 
+        loginScreen(
+            route = "login?add-new-user={addNewUser}",
+            arguments = listOf(navArgument("addNewUser"){
+                defaultValue = false
+                type = NavType.BoolType
+            }),
+            navController = navController,
+        )
+
         catsListScreen(
             route = "cats",
             navController = navController,
@@ -38,15 +47,6 @@ fun AppNavigation() {
                 navController.navigate("quiz")
             },
 
-        )
-
-        loginScreen( //add-new-user
-            route = "login?add-new-user={addNewUser}",
-            arguments = listOf(navArgument("addNewUser"){
-               defaultValue = false
-               type = NavType.BoolType
-            }),
-            navController = navController,
         )
 
         catDetailsScreen(
@@ -118,12 +118,9 @@ fun AppNavigation() {
 
 inline val SavedStateHandle.catId: String
     get() = checkNotNull(get("id")) {"catId is mandatory"}
-inline val SavedStateHandle.photoIndex: Int
-    get() = checkNotNull(get("photoIndex")) {"photoIndex is mandatory"}
 inline val SavedStateHandle.category: Int
     get() = checkNotNull(get("category")) {"category is mandatory"}
 inline val SavedStateHandle.result: Float
     get() = checkNotNull(get("result")) {"result is mandatory"}
 inline val SavedStateHandle.addNewUser: Boolean
     get() = get("addNewUser") ?: false
-

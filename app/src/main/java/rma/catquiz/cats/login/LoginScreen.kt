@@ -67,7 +67,6 @@ fun LoginScreen(
     onClick: (uiEvent: ILoginContract.LoginUIEvent) -> Unit,
     onValueChange: (uiEvent: ILoginContract.LoginUIEvent) -> Unit
 ) {
-//    val radialFade = Brush.radialGradient(0.5f to Color.Green, 1f to Color.Transparent)
     Scaffold(
         content = { pv ->
             Column(

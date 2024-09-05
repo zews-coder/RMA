@@ -1,6 +1,5 @@
 package rma.catquiz.di
 
-
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -44,7 +43,6 @@ object ApiModule {
             )
             .build()
 
-
     @Singleton
     @Provides
     @Named("CatApiRetrofit")
@@ -53,7 +51,6 @@ object ApiModule {
         .client(okHttpClient)
         .addConverterFactory(JsonAndClass.asConverterFactory("application/json".toMediaType()))
         .build()
-
 
     @Singleton
     @Provides
@@ -66,6 +63,7 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideCatApi(@Named("CatApiRetrofit") retrofit: Retrofit): ICatListInterface = retrofit.create(ICatListInterface::class.java)
+
     @Singleton
     @Provides
     fun provideResultApi(@Named("ResultRetrofit") retrofit: Retrofit): IResultsInterface = retrofit.create(IResultsInterface::class.java)

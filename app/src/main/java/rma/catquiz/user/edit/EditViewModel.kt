@@ -34,11 +34,9 @@ class EditViewModel @Inject constructor(
     fun setEditEvent(event: IEditContract.EditUIEvent) =
         viewModelScope.launch { _editEvents.emit(event) }
 
-    //osluskuje koji se Event desio
     init {
         observerEvents()
     }
-
 
     private fun observerEvents() {
         viewModelScope.launch {

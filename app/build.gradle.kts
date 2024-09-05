@@ -2,11 +2,10 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("androidx.navigation.safeargs.kotlin")
-    kotlin("plugin.serialization") version "1.9.22"
     id("com.google.dagger.hilt.android")
-    //Room
-    id("androidx.room")
     id("com.google.devtools.ksp")
+    id("androidx.room")
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 android {
@@ -29,7 +28,6 @@ android {
     room {
         schemaDirectory("$projectDir/schemas")
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -60,7 +58,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -109,7 +106,6 @@ dependencies {
     val hiltVersion = "2.51"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
-    // Hilt Compose Navigation support (hiltViewModel factory)
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //Room

@@ -10,11 +10,8 @@ import rma.catquiz.cats.entities.image.CatGalleryDao
 @Database(
     entities = [
         Cat::class, CatGallery::class
-    ],
-    version = 1,
-    exportSchema = true,
+    ], version = 1, exportSchema = true,
 )
-
 abstract class AppDataBase: RoomDatabase() {
     abstract fun catDao(): CatDao
     abstract fun catGalleryDao(): CatGalleryDao

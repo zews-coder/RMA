@@ -47,7 +47,6 @@ data class QuizResult(
         return covertToDate(createdAt)
     }
 
-
     private fun covertToDate(milliSeconds: Long): String {
         val formatter = SimpleDateFormat("dd/MM/yy hh:mm:ss")
         val calendar: Calendar = Calendar.getInstance()

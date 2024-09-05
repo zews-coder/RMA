@@ -1,6 +1,5 @@
 package rma.catquiz.di
 
-
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,12 +10,13 @@ import rma.catquiz.database.AppDataBase
 import rma.catquiz.database.AppDataBaseBuilder
 import javax.inject.Singleton
 
-@Module //class in which you can add bindings for types that cannot be constructor injected
+@Module
 @InstallIn(SingletonComponent::class)
 object DataBaseModule {
 
     @Provides
     fun provideCatDao(dataBase: AppDataBase): CatDao = dataBase.catDao()
+
     @Provides
     fun provideCatGalleryDao(dataBase: AppDataBase): CatGalleryDao = dataBase.catGalleryDao()
 

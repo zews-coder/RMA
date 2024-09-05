@@ -21,52 +21,14 @@ class HistoryViewModel @Inject constructor(
     private val _historyState = MutableStateFlow(IHistoryContract.HistoryState(userData = userDataStore.data.value))
     val historyState = _historyState.asStateFlow()
 
-    private val _historyEvent = MutableSharedFlow<IHistoryContract.HistoryUIEvent>()
-
-    fun setHistoryEvent(event: IHistoryContract.HistoryUIEvent) = viewModelScope.launch { _historyEvent.emit(event) }
-    private fun setHistoryState(updateWith: IHistoryContract.HistoryState.() -> IHistoryContract.HistoryState) =
-        _historyState.getAndUpdate(updateWith)
-
-    init {
-        observeEvents()
-    }
-
-    fun getBestResult(quiz : String): String {
+    fun getBestResult(): String {
         val user = historyState.value.userData
-
-        return when (quiz) {
-            "leftRightCat" -> user.quiz.bestResult.toString()
-            else -> "0.0"
-        }
+        return user.quiz.bestResult.toString()
     }
 
-    fun getAllResults(quiz: String): List<QuizResult> {
+    fun getAllResults(): List<QuizResult> {
         val user = historyState.value.userData
-
-        return when (quiz) {
-            "leftRightCat" -> user.quiz.resultsHistory.reversed()
-            else -> emptyList<QuizResult>()
-        }
+        return  user.quiz.resultsHistory.reversed()
     }
 
-    private fun observeEvents() {
-        viewModelScope.launch {
-            _historyEvent.collect {
-                when (it) {
-                    is IHistoryContract.HistoryUIEvent.Expanded -> expandedChanged(it.index)
-                }
-            }
-        }
-    }
-
-    private fun expandedChanged(index: Int) {
-        var expandedList = historyState.value.expandedList.toMutableList()
-        expandedList[index] = !expandedList[index]
-        if (expandedList[index])
-            expandedList = expandedList.mapIndexed { i, bool -> if (i != index) false else bool }.toMutableList()
-
-        viewModelScope.launch {
-            setHistoryState { copy(expandedList = expandedList.toImmutableList()) }
-        }
-    }
 }

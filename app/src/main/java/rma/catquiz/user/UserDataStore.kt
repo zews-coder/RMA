@@ -35,7 +35,6 @@ class UserDataStore@Inject constructor(
 
     suspend fun addResult(result: QuizResult): User {
         val currentUser = data.value
-
         val resultsHistory = currentUser.quiz.resultsHistory.toMutableList()
         resultsHistory.add(result)
 
@@ -45,7 +44,6 @@ class UserDataStore@Inject constructor(
         )
 
         val updatedUser = currentUser.copy(quiz = updateResults)
-
         dataStore.updateData {
             updatedUser
         }

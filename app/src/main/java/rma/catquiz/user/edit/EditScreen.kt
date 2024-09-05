@@ -49,7 +49,7 @@ fun NavGraphBuilder.editScreen(
                 if (editState.saveUserPassed) {
                     navController.navigate("cats")
                 } else {
-                    LoginScreen(
+                    EditScreen(
                         paddingValues = it,
                         editState = editState,
                         onClick = { uiEvent ->
@@ -66,7 +66,7 @@ fun NavGraphBuilder.editScreen(
 }
 
 @Composable
-fun LoginScreen(
+fun EditScreen(
     paddingValues: PaddingValues,
     editState: IEditContract.EditState,
     onClick: (uiEvent: IEditContract.EditUIEvent) -> Unit,

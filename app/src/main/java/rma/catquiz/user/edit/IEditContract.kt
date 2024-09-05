@@ -1,14 +1,10 @@
 package rma.catquiz.user.edit
 
-import android.graphics.Bitmap
-import android.widget.ImageView
-
 interface IEditContract {
     data class EditState (
         val nickname: String,
         val name: String,
         val email: String,
-        val bitmap: Bitmap? = null,
         val saveUserPassed: Boolean = false
     ) {
         sealed class DetailsError {
