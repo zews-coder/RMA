@@ -28,7 +28,9 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -46,6 +48,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -57,6 +60,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -67,8 +71,9 @@ import coil.compose.SubcomposeAsyncImage
 import kotlinx.coroutines.launch
 import rma.catquiz.R
 import rma.catquiz.cats.entities.cat.Cat
+import rma.catquiz.cats.entities.cat.CatWeight
 import rma.catquiz.ui.AppIconButton
-import rma.catquiz.ui.SimpleInfo
+import rma.catquiz.ui.theme.CatapultTheme
 import rma.catquiz.user.User
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -114,6 +119,7 @@ fun NavGraphBuilder.catsListScreen(
                             title = {
                                 Text(
                                     text = "Catapult",
+                                    color = MaterialTheme.colorScheme.primary,
                                     style = MaterialTheme.typography.labelLarge
                                 )
                             },
@@ -133,7 +139,14 @@ fun NavGraphBuilder.catsListScreen(
                                             )
                                         )
                                     })
-                            }
+                            },
+                            colors = TopAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                scrolledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                navigationIconContentColor = MaterialTheme.colorScheme.primary,
+                                titleContentColor = MaterialTheme.colorScheme.primary,
+                                actionIconContentColor = MaterialTheme.colorScheme.primary
+                            )
                         )
                     },
                     //Dugme za pocetak kviza
@@ -417,30 +430,93 @@ fun CatDetails(
     Card(
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxSize()
-            .clickable { onClick() }
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,  // Use your primaryContainerLight color
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer   // Use onPrimaryContainerLight for text
+        ),
+        elevation = CardDefaults.cardElevation(6.dp)  // Subtle elevation for depth
     ) {
-
         Column(
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
+            // Cat Name
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = cat.name,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.primary  // Primary color for the name
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
 
-            SimpleInfo(title = "Race Of Cat", description = cat.name)
+            // Description section
+            Text(
+                text = "Description",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.tertiary  // Tertiary color for section titles
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = cat.description,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface  // Use onSurfaceLight for description text
+            )
             Spacer(modifier = Modifier.height(16.dp))
 
-            SimpleInfo(title = "Description", description = cat.description)
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row {
-                cat.temperament.replace(" ", "").split(",").take(3).forEach {
+            // Temperament Chips
+            Text(
+                text = "Temperament",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.tertiary  // Tertiary color for section titles
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Display up to 3 temperament chips
+                cat.temperament.replace(" ", "").split(",").take(3).forEach { temperament ->
                     AssistChip(
                         onClick = { },
-                        label = { Text(text = it) }
+                        label = {
+                            Text(
+                                text = temperament,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer // Text color for chips
+                            )
+                        },
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer // Chip background
+                        ),
+                        modifier = Modifier.weight(1f),
                     )
-                    Spacer(modifier = Modifier.width(16.dp))
                 }
             }
         }
     }
 }
 
+@Preview
+@Composable
+fun PreviewCatDetails() {
+    CatapultTheme(
+        darkTheme = true
+    ) {
+
+        CatDetails(
+            cat = Cat(
+                id = "1",
+                name = "Abyssinian",
+                description = "The Abyss",
+                life = "9-15",
+                temperament = "Active, Energetic, Independent, Intelligent, Gentle",
+                origin = "Egypt",
+                weight = CatWeight("4.5"),
+            )
+        ) { }
+    }
+}

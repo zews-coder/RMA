@@ -125,10 +125,7 @@ fun CatGalleryScreen(
                 SubcomposeAsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .clickable {
-                            onPhotoClicked(catState.catId, index)
-                        },
+                        .aspectRatio(1f),
                     model = item,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,

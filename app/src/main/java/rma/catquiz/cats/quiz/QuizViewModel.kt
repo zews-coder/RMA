@@ -15,7 +15,6 @@ import kotlinx.coroutines.withContext
 import rma.catquiz.cats.entities.CatService
 import rma.catquiz.cats.entities.cat.Cat
 import rma.catquiz.di.DispatcherProvider
-import rma.catquiz.ui.seeResults
 import rma.catquiz.user.QuizResult
 import rma.catquiz.user.UserDataStore
 import javax.inject.Inject
@@ -59,7 +58,10 @@ class QuizViewModel @Inject constructor(
                     pauseTimer()
                     addResult(
                         QuizResult(
-                            result = seeResults(questionState.value.timer, questionState.value.points.toInt()),
+                            result = seeResults(
+                                questionState.value.timer,
+                                questionState.value.points.toInt()
+                            ),
                             createdAt = System.currentTimeMillis()
                         )
                     )
@@ -73,6 +75,13 @@ class QuizViewModel @Inject constructor(
         val questionIndex = questionState.value.questionIndex
         val question = questionState.value.questions[questionIndex]
         return catId == question.correctAnswer
+    }
+
+    private fun seeResults(time: Int, points: Int): Float {
+        //UBP = BTO * 2.5 * (1 + (PVT + 120) / MVT)
+        var ubp: Float = points * 2.5F * (1 + (time + 120F) / 300)
+        if (ubp > 100) ubp = 100f
+        return ubp
     }
 
     private fun pauseTimer() {

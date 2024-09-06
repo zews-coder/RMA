@@ -161,7 +161,7 @@ fun QuizScreen(
                 LocalRippleTheme provides CustomRippleTheme(
                     color =
                     if (quizViewModel.isCorrectAnswer(question.cats[0].id))
-                        MaterialTheme.colorScheme.tertiary
+                        MaterialTheme.colorScheme.primary
                     else
                         MaterialTheme.colorScheme.error
                 )
