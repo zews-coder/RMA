@@ -14,7 +14,8 @@ interface IQuizContract {
         val questions: List<QuizQuestion> = emptyList(),
         val points: Float = 0f,
         val questionIndex: Int = 0,
-        val timer: Int = 60*Timer.MINUTES //5min
+        val timer: Int = 60*Timer.MINUTES, //5min
+        val showQuizExitDialog: Boolean = false,
     ) {
         sealed class DetailsError {
             data class DataUpdateFailed(val cause: Throwable? = null): DetailsError()
@@ -36,5 +37,6 @@ interface IQuizContract {
 
     sealed class QuizUIEvent {
         data class QuestionAnswered(val catAnswer: Cat) : QuizUIEvent()
+        data object Exit : QuizUIEvent()
     }
 }

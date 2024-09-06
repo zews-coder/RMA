@@ -94,6 +94,7 @@ class QuizViewModel @Inject constructor(
             _questionEvent.collect {
                 when (it) {
                     is IQuizContract.QuizUIEvent.QuestionAnswered -> checkAnswer(it.catAnswer)
+                    IQuizContract.QuizUIEvent.Exit -> showQuizExitDialog()
                 }
             }
         }
@@ -131,6 +132,10 @@ class QuizViewModel @Inject constructor(
                 points = points,
             )
         }
+    }
+
+    private fun showQuizExitDialog() {
+        setQuestionState { copy(showQuizExitDialog = !showQuizExitDialog) }
     }
 
     private suspend fun getAllPictures(id: String): List<String> {

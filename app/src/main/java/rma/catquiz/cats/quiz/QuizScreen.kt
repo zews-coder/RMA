@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.ripple.LocalRippleTheme
@@ -20,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -60,7 +62,9 @@ fun NavGraphBuilder.quizScreen(
                     navigationIcon = {
                         AppIconButton(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            onClick = { navController.navigateUp() })
+                            onClick = {
+                                quizViewModel.setQuestionEvent(IQuizContract.QuizUIEvent.Exit)
+                            })
                     }
                 )
             },
@@ -81,6 +85,17 @@ fun NavGraphBuilder.quizScreen(
                         }
                     }
                 } else {
+                    if (quizState.showQuizExitDialog) {
+                        ExitConfirmationDialog(
+                            onConfirm = {
+                                navController.navigateUp()
+                            },
+                            onDismiss = {
+                                quizViewModel.setQuestionEvent(IQuizContract.QuizUIEvent.Exit)
+                            }
+                        )
+                    }
+                    else
                     if ((quizState.questionIndex == 19 || quizState.timer <= 0) && quizState.result != null) {
                         navController.navigate("quiz/result/3/${quizState.result?.result ?: 0}")
                     }
@@ -208,4 +223,31 @@ fun QuizScreen(
             }
         }
     }
+}
+
+@Composable
+fun ExitConfirmationDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = {
+            onDismiss()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirm()
+                }
+            ) {
+                Text("Yes")
+            }
+        },
+        title = {
+            Text("Exiting the quiz?")
+        },
+        text = {
+            Text("Are you sure you want to exit the quiz?")
+        }
+    )
 }
