@@ -60,6 +60,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -453,15 +455,9 @@ fun CatDetails(
                     color = MaterialTheme.colorScheme.primary  // Primary color for the name
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
 
-            // Description section
-            Text(
-                text = "Description",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.tertiary  // Tertiary color for section titles
-            )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+
             Text(
                 text = cat.description,
                 style = MaterialTheme.typography.bodyLarge,
@@ -477,7 +473,8 @@ fun CatDetails(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 // Display up to 3 temperament chips
                 cat.temperament.replace(" ", "").split(",").take(3).forEach { temperament ->
@@ -486,17 +483,18 @@ fun CatDetails(
                         label = {
                             Text(
                                 text = temperament,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer // Text color for chips
+                                color = MaterialTheme.colorScheme.onSecondaryContainer, // Text color for chips
                             )
                         },
                         colors = AssistChipDefaults.assistChipColors(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer // Chip background
                         ),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }
         }
+
     }
 }
 

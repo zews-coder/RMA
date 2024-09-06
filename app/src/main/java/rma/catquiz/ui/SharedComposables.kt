@@ -73,7 +73,6 @@ fun TopBar(
         },
         navigationIcon = {
             AppIconButton(
-//                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 imageVector = Icons.Filled.ArrowBack,
                 onClick = onBackClick)
         },
