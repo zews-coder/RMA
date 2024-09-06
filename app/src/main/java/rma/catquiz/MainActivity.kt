@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setContent {
             val usersData by userDataStore.data.collectAsState()
             CatapultTheme(darkTheme = if (usersData.nickname == "") false else usersData.darkTheme) {

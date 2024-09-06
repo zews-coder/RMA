@@ -68,16 +68,6 @@ fun AppNavigation() {
             }
         )
 
-//        catPhotoScreen(
-//            route = "photo/{id}/{photoIndex}",
-//            navController = navController,
-//            arguments = listOf(navArgument("id") {
-//                type = NavType.StringType
-//            }, navArgument("photoIndex") {
-//                type = NavType.IntType
-//            }),
-//        )
-
         quizScreen(
             route = "quiz",
             navController = navController

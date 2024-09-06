@@ -19,7 +19,7 @@ class HistoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _historyState = MutableStateFlow(IHistoryContract.HistoryState(userData = userDataStore.data.value))
-    val historyState = _historyState.asStateFlow()
+    private val historyState = _historyState.asStateFlow()
 
     fun getBestResult(): String {
         val user = historyState.value.userData

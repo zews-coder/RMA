@@ -34,7 +34,7 @@ fun NavGraphBuilder.historyScreen(
     val historyViewModel: HistoryViewModel = hiltViewModel()
 
     Surface(
-        tonalElevation = 1.dp
+        tonalElevation = 10.dp
     ) {
         Scaffold(
             topBar = { TopBar(onBackClick = { navController.navigateUp() }) }
@@ -47,13 +47,12 @@ fun NavGraphBuilder.historyScreen(
 
                 Column(
                     modifier = Modifier
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.SpaceEvenly
+                        .fillMaxHeight()
                 ) {
                     Card {
                         CardContent(
                             bestResult = historyViewModel.getBestResult(),
-                            title = "All Quiz Results",
+                            title = "Quiz Results",
                             results = historyViewModel.getAllResults(),
                         )
                     }
@@ -71,7 +70,7 @@ private fun CardContent(
 ) {
     Column(
         modifier = Modifier
-            .padding(20.dp)
+            .padding(22.dp)
             .animateContentSize(),
         verticalArrangement = Arrangement.spacedBy(40.dp)
     ) {
@@ -82,8 +81,8 @@ private fun CardContent(
                 modifier = Modifier.weight(3 / 4f),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                Text(text = "Best Result: $bestResult", style = MaterialTheme.typography.labelLarge)
-                Text(text = title, style = MaterialTheme.typography.headlineSmall)
+                Text(text = title, style = MaterialTheme.typography.headlineLarge)
+                Text(text = "Best Result: $bestResult", style = MaterialTheme.typography.bodyMedium)
             }
         }
 
